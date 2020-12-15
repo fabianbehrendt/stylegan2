@@ -46,10 +46,12 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     sc        = dnnlib.SubmitConfig()                                          # Options for dnnlib.submit_run().
     tf_config = {'rnd.np_random_seed': 1000}                                   # Options for tflib.init_tf().
     try:
-        if resume_pkl is not None:
-            pkl, kimg = misc.locate_latest_pkl(result_dir)
-            train.resume_pkl = pkl
-            train.resume_kimg = kimg
+        if resume_pkl is 'latest':
+          pkl, kimg = misc.locate_latest_pkl(result_dir)
+          train.resume_pkl = pkl
+          train.resume_kimg = kimg
+        else:
+          train.resume_kimg = 0
     except:
         print('Couldn\'t find valid snapshot, starting over')
         resume_pkl = None
